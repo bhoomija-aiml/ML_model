@@ -21,6 +21,9 @@ target = "yield_kg_per_hectare"
 X = data.drop(target, axis=1)
 y = data[target]
 
+# SAVE FEATURE NAMES (VERY IMPORTANT)
+feature_columns = X.columns
+
 # split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
@@ -30,8 +33,9 @@ X_train, X_test, y_train, y_test = train_test_split(
 model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
-# save model
+# save model + columns together
 with open("model.pkl", "wb") as f:
-    pickle.dump(model, f)
+    pickle.dump((model, feature_columns), f)
 
 print("Model trained & saved successfully!")
+print("Features used:", list(feature_columns))
